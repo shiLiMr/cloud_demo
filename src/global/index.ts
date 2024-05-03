@@ -7,6 +7,6 @@ import registerElementPlusIcon from "./registerElementPlusIcon";
 export default {
     install(app: App) {
         app.use(registerElementPlus)  
-        app.use(registerElementPlusIcon)
+        app.use(registerElementPlusIcon)  // 使用icon
     }
 }
