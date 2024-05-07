@@ -1,0 +1,47 @@
+import Mock from 'mockjs'
+
+const data=Mock.mock({
+    'list|3':[{
+        'id|+1':1,
+        name:'@cname',
+        status:"@boolean",
+        shuzi:'@natural(1)',
+        zhengshu:'@integer(1,100)',
+        'zifu|5-8':'@character(number)',
+        'str|1-3':'@string()',
+        // ss:'@range(1,6)',
+        moth:'@date()',
+        moth1:'@date(format)',
+        time:'@time()',
+        time1:'@time(format)',
+        datatime:'@datetime()',
+        datatime1:'@datetime(format)',
+        datatime2:"@datetime('yyyy/MM/dd a HH:mm:ss')",
+        datatime3:"@now('yyyy/MM/dd a HH:mm:ss')",
+        imgs:'@image("300x250","#02adea")',
+        color:'@color()',
+        text:'@paragraph(1)',
+        ctext:'@cparagraph(1)',
+        // email:'@email()',
+        url:'@url()',
+        // ip:'@ip()',
+        ct:'@csentence()',
+        word:'@word()',
+        cword:'@cword()',
+        yuming:'@domain()',
+        email2:'@email("163.com")',     
+        ip:'@ip()',
+        // sheng:'@region()',
+        shenge:'@region()',
+        sheng1:'@province()',
+        shi:'@city()',
+        shii:'@city(true)',
+        qu:'@county()',
+        qu1:'@county(true)',
+        xian:'@county(true)',
+        youzheng:'@zip()',
+        'idd':'@id()',
+    }]
+})
+
+console.log(JSON.stringify(data,null,2));
