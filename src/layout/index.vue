@@ -19,8 +19,6 @@ import { defineAsyncComponent } from 'vue';
 const LayAside= defineAsyncComponent(()=>import('./LayAside/layAside.vue'))
 const LayHeader= defineAsyncComponent(()=>import('./LayHeader/layHeader.vue'))
 const LayMain= defineAsyncComponent(()=>import('./LayMain/laymain.vue'))
-// const LayHeader= defineAsyncComponent(()=>import('./Layout/LayHeader.vue'))
-// const LayMain= defineAsyncComponent(()=>import('./Layout/LayMain.vue'))
 
 </script>
 <style lang='scss' scoped>

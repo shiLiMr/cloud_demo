@@ -1,8 +1,5 @@
 <template>
-<!--  -->
-<el-main style="background-color: skyblue;">
-    <RouterView />
-</el-main>
+    积云官网
 </template>
 <script setup lang='ts'>
 

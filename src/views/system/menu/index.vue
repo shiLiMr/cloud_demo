@@ -1,8 +1,5 @@
 <template>
-<!--  -->
-<el-main style="background-color: skyblue;">
-    <RouterView />
-</el-main>
+菜单管理
 </template>
 <script setup lang='ts'>
 

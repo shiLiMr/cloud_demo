@@ -1,8 +1,5 @@
 <template>
-<!--  -->
-<el-main style="background-color: skyblue;">
-    <RouterView />
-</el-main>
+找不到页面
 </template>
 <script setup lang='ts'>
 

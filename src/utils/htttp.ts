@@ -28,7 +28,7 @@ http.interceptors.response.use((response)=>{
 export default http;
 
 */
-
+/*
 import axios, { AxiosError, type AxiosInstance, type AxiosResponse, type InternalAxiosRequestConfig, type Method, type AxiosRequestConfig } from 'axios'
 // 创建sxios实例
 const server: AxiosInstance = axios.create({
@@ -81,4 +81,60 @@ export const del = <T = any>(url: string, data: Object={}) => {
 }
 
 // 导出封装实例
+export default request      
+
+*/
+
+import axios, { AxiosError, type AxiosInstance, type AxiosRequestConfig, type AxiosResponse, type InternalAxiosRequestConfig, type Method } from 'axios'
+// 创建axios实例
+const server:AxiosInstance = axios.create({
+    baseURL: import.meta.env.VITE_APP_BASE_API,
+    timeout:10000,
+})
+
+// 请求拦截
+server.interceptors.request.use((config:InternalAxiosRequestConfig)=>{
+    return config
+},(err:AxiosError)=>{
+    return Promise.reject(err)
+})
+
+// 响应拦截
+server.interceptors.response.use((response:AxiosResponse)=>{
+    return response
+},(error:AxiosError)=>{
+    return Promise.reject(error)
+})
+
+// 返回参数接口
+interface DataType<T = any>{
+    code:number,
+    msg:string,
+    data:T
+}
+
+
+// 请求
+const request =<T = any>(url:string,method:Method='GET',data?:Object,options?:AxiosRequestConfig)=>{
+    return server.request<T,DataType<T>>({
+        url,
+        method,
+        [method ==='GET' ? 'params':'data']:data,
+        ...options,
+    })
+}
+// 封装get、post、put、delete请求
+export const get =<T=any >(url:string,data:Object={})=>{
+    return request<T>(url,'GET',data)
+}
+export const post=<T = any>(url:string,data:Object={})=>{
+    return request<T>(url,'POST',data)
+}
+export const put=<T = any>(url:string,data:Object={})=>{
+    return request<T>(url,'PUT',data)
+}
+export const del=<T = any>(url:string,data:Object={})=>{
+  return request<T>(url,'DELETE',data)
+}
+
 export default request
