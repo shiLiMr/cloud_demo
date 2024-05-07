@@ -32,8 +32,8 @@ export default http;
 import axios, { AxiosError, type AxiosInstance, type AxiosResponse, type InternalAxiosRequestConfig, type Method, type AxiosRequestConfig } from 'axios'
 // 创建sxios实例
 const server: AxiosInstance = axios.create({
-    // baseURL: import.meta.env.VIET_APP_BASE_API,
-    baseURL: 'https://mock.mengxuegu.com/mock/66389f12cab9671f88bd30ef/api',
+    baseURL: import.meta.env.VITE_APP_BASE_API,
+    // baseURL: 'https://mock.mengxuegu.com/mock/66389f12cab9671f88bd30ef/api',
     timeout: 10000,
 })
 // 请求拦截
@@ -67,16 +67,16 @@ const request = <T = any>(url: string, method: Method = 'GET', data?: Object,
     })
 }
 // 封装get、post、put、delete请求
-export const get = <T = any>(url: string, data: Object) => {
+export const get = <T = any>(url: string, data: Object={}) => {
     request<T>(url, 'GET', data)
 }
-export const post = <T = any>(url: string, data: Object) => {
+export const post = <T = any>(url: string, data: Object={}) => {
     request<T>(url, 'POST', data)
 }
-export const put = <T = any>(url: string, data: Object) => {
+export const put = <T = any>(url: string, data: Object={}) => {
     request<T>(url, 'PUT', data)
 }
-export const del = <T = any>(url: string, data: Object) => {
+export const del = <T = any>(url: string, data: Object={}) => {
     request<T>(url, 'DELETE', data)
 }
 

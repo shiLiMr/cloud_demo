@@ -2,6 +2,8 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
+import './style/index.scss'
+
 // 引入 element-plus 全局样式
 import Ele from './global' 
 
