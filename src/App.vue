@@ -5,14 +5,19 @@ import SvgIcon from './components/SvgIcon.vue';
 
 import axios from 'axios';
 
-import http from './utils/htttp';
-import {login} from './api';
+// import http from './utils/htttp';
+import {loginApi,getMenuApi} from '@/api';
 const add=async ()=>{
 //  const https=await axios.get('https://mock.mengxuegu.com/mock/66389f12cab9671f88bd30ef/api/login')
 // console.log(https);
 // const ser =await login()
-const ser=await http.get('/login')
+const ser=await loginApi()
  console.log(ser)
+}
+const adds=()=>{
+  getMenuApi().then(res=>{
+    console.log(res)
+  })
 }
 
 
@@ -21,6 +26,7 @@ const ser=await http.get('/login')
 <template>
 
   <SvgIcon icon="Edit" color="red" size="30" @click="add" />
+  <el-button @click="adds">按钮</el-button>
 
   <RouterView />
 </template>
