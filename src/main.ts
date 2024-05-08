@@ -4,7 +4,7 @@ import { createPinia } from 'pinia'
 
 import './style/index.scss'
 
-// 引入 element-plus 全局样式
+// 引入 element-plus 全局样式  及自封装icon图标
 import Ele from './global' 
 
 import App from './App.vue'

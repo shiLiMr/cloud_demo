@@ -1,6 +1,6 @@
 <template>
-    <el-menu active-text-color="#ffd04b" background-color="#545c64" class="el-menu-vertical-demo" :default-active="$route.path"
-        text-color="#fff" router :default-openeds="['/system']" >
+    <el-menu active-text-color="#ffd04b" background-color="transparent" class="el-menu-vertical-demo" :default-active="$route.path"
+        text-color="#fff" router :default-openeds="['/system']" :collapse="store.isCollapse"  :show-timeout="600" >
         <el-menu-item index="/home">
             <svg-icon icon="House"></svg-icon>
             <span>首页</span>
@@ -50,6 +50,8 @@
     </el-menu>
 </template>
 <script setup lang='ts'>
+import { useIsCollStore } from '@/stores/isColl';
+const store=useIsCollStore()
 
 
 </script>

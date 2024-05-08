@@ -1,6 +1,6 @@
 <template>
 <!--  -->
-<el-main style="background-color: skyblue;">
+<el-main >
     <RouterView />
 </el-main>
 </template>

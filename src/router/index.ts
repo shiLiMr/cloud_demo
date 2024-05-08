@@ -28,6 +28,7 @@ const dynamicRoutes: RouteRecordRaw[] = [
           cache: false,// 该页面是否需要缓存 false不缓存
           hidden: false,// 是否显示在菜单中
         },
+        redirect: '/system/menu',
         children: [
           {
             path: '/system/menu',// 菜单管理
@@ -73,6 +74,7 @@ const dynamicRoutes: RouteRecordRaw[] = [
           cache: false,// 该页面是否需要缓存 false不缓存
           hidden: false,// 是否显示在菜单中
         },
+        redirect: '/goods/list',
         children: [
           {
             path: '/goods/list',// 商品列表
