@@ -40,7 +40,7 @@ onBeforeRouteUpdate((to, from) => {
 const getBreadlist = (to: RouteLocationNormalized) => {
     const wer = to.matched.filter((item) => item.meta && item.meta.title && item.meta.icon)
     breadlist.value = wer
-    console.log(breadlist.value);
+    // console.log(to);
 }
 // 初始化时触发函数
 onMounted(() => {
@@ -48,6 +48,8 @@ onMounted(() => {
 })
 // watch(route,(newval,oldval)=>{
 //     console.log(newval)
+//     const wer = route.matched.filter((item) => item.meta && item.meta.title && item.meta.icon)
+//     breadlist.value = wer
 // },{deep:true,immediate:true})
 
 // 点击面包屑跳转

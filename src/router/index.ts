@@ -2,6 +2,11 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 const dynamicRoutes: RouteRecordRaw[] = [
   {
+    path: '/login', // 登录
+    name: 'Login',
+    component: () => import('@/views/login/index.vue'),
+  },
+  {
     // 主页
     path: '/',
     name: 'Layout',
@@ -15,7 +20,7 @@ const dynamicRoutes: RouteRecordRaw[] = [
         meta: {
           title: '首页',
           icon: 'HomeFilled',
-          cache: false,// 该页面是否需要缓存 false不缓存
+          cache: true,// 该页面是否需要缓存 false不缓存
           hidden: false,// 是否显示在菜单中
         }
       },
