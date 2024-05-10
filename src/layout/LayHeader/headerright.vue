@@ -12,9 +12,9 @@
         <div class="header-right-user">
             <el-dropdown >
                 
-                <span class="el-dropdown-link">
-                    <el-avatar class="rgiht-user" :size="30" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" />
-                    <span>黎娜</span>
+                <span class="el-dropdown-link" v-if="store.user">
+                    <el-avatar class="rgiht-user" :size="30" :src="store.user?.imageUrl" />
+                    <span>{{store.user?.username}}</span>
                     <el-icon class="el-icon--right"><arrow-down /></el-icon>
                 </span>
                 <template #dropdown>
@@ -22,7 +22,7 @@
                         <el-dropdown-item  @click="$router.push('/')">首页</el-dropdown-item>
                         <el-dropdown-item @click="$router.push('/404')">404</el-dropdown-item>
                         <el-dropdown-item @click="$router.push('/401')">401</el-dropdown-item>
-                        <el-dropdown-item @click="$router.push('/login')" divided>退出系统</el-dropdown-item>
+                        <el-dropdown-item @click="loginout" divided>退出系统</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -31,6 +31,8 @@
 </template>
 <script setup lang='ts'>
 import { ref } from 'vue'
+import {useAuthStore} from '@/stores/auth'
+const store=useAuthStore()
 
 // 切换全屏
 import { useFullscreen } from '@vueuse/core'
@@ -42,6 +44,12 @@ const isDark = useDark({
     valueLight: "", //亮模式下的类名
 })
 
+
+
+const loginout=()=>{
+
+    store.userLogout()
+}
 
 
 const input = ref(false)

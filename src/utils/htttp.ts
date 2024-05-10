@@ -101,7 +101,7 @@ server.interceptors.request.use((config:InternalAxiosRequestConfig)=>{
 
 // 响应拦截
 server.interceptors.response.use((response:AxiosResponse)=>{
-    return response
+    return response.data
 },(error:AxiosError)=>{
     return Promise.reject(error)
 })

@@ -28,7 +28,8 @@
 <style lang='scss' scoped>
 ::v-deep .el-scrollbar__view {
     height: 100% !important;
-    background-color: #fff;
+    // background-color: #fff;
+    border-radius: 10px;
   
 }
 

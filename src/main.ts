@@ -12,11 +12,13 @@ import Ele from './global'
 import App from './App.vue'
 import router from './router'
 
+import "./permission"// 权限控制
+
 const app = createApp(App)
 
 app.use(Ele)
 
-app.use(pinia)
+app.use(pinia) // pinia持久化存储
 app.use(router)
 
 console.log('main',import.meta.env.VITE_APP_BASE_API)

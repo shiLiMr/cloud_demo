@@ -12,7 +12,7 @@
                     <el-input v-model="ruleForm.password" prefix-icon="Lock" show-password />
                 </el-form-item>
                 <el-form-item>
-                    <el-checkbox v-model="checked" label="记住密码" size="large" />
+                    <el-checkbox v-model="ruleForm.checked" label="记住密码" size="large" />
                 </el-form-item>
 
                 <el-form-item>
@@ -28,17 +28,20 @@ import type { ComponentSize, FormInstance, FormRules } from 'element-plus'
 import { Local } from '@/utils/storeage'
 import { useRouter } from 'vue-router';
 const router = useRouter()
-import {loginApi} from '@/api/index'
+import { useAuthStore } from '@/stores/auth'
+const store = useAuthStore()
 
 
 interface RuleForm { // 
     username: string
     password: string
+    checked: boolean
 }
 const ruleFormRef = ref<FormInstance>()
 
 const checked = ref<boolean>(Local.get('checked') || false)  // 是否记住密码
 const ruleForm = reactive<RuleForm>({
+    checked: Local.get('checked') || false,
     username: Local.get('username') || '17802901987',
     password: Local.get('password') || '123456',
 })
@@ -70,22 +73,13 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (!formEl) return
     await formEl.validate((valid, fields) => {
         if (valid) {
-            if (checked.value) {
-                Local.set('checked', checked.value)
-                Local.set('username', ruleForm.username)
-                Local.set('password', ruleForm.password)
-            } else {
-                Local.remove('checked')
-                Local.remove('username')
-                Local.remove('password')
-            }
+            //存储密码 用户名
+            store.setRememberPwd(ruleForm)
             // 调用登录接口
-            loginApi(ruleForm).then(res=>{
-                console.log(res); 
+            store.userLogin(ruleForm).then(res => {
+                router.push('/home')
             })
             //   跳转主页
-            // router.push('/home')
-
         }
     })
 }
