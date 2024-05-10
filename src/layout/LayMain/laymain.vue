@@ -1,6 +1,9 @@
 <template>
     <!--  -->
+    
+
     <el-main class="el-main-main">
+        
         <el-scrollbar>
             <!-- 缓存需要缓存的组件 -->
             <!-- <div class="el-main-div"> -->
@@ -17,6 +20,7 @@
             <!-- </div>   -->
         </el-scrollbar>
     </el-main>
+
 </template>
 <script setup lang='ts'>
 
@@ -25,6 +29,7 @@
 ::v-deep .el-scrollbar__view {
     height: 100% !important;
     background-color: #fff;
+  
 }
 
 .main-enter-active,

@@ -107,9 +107,9 @@ server.interceptors.response.use((response:AxiosResponse)=>{
 })
 
 // 返回参数接口
-interface DataType<T = any>{
+type DataType<T = any>={
     code:number,
-    msg:string,
+    message:string,
     data:T
 }
 
@@ -124,16 +124,16 @@ const request =<T = any>(url:string,method:Method='GET',data?:Object,options?:Ax
     })
 }
 // 封装get、post、put、delete请求
-export const get =<T=any >(url:string,data:Object={})=>{
+export const get =<T=any >(url:string,data:Object)=>{
     return request<T>(url,'GET',data)
 }
-export const post=<T = any>(url:string,data:Object={})=>{
+export const post=<T = any>(url:string,data:Object)=>{
     return request<T>(url,'POST',data)
 }
-export const put=<T = any>(url:string,data:Object={})=>{
+export const put=<T = any>(url:string,data:Object)=>{
     return request<T>(url,'PUT',data)
 }
-export const del=<T = any>(url:string,data:Object={})=>{
+export const del=<T = any>(url:string,data:Object)=>{
   return request<T>(url,'DELETE',data)
 }
 

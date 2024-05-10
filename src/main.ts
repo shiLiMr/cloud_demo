@@ -1,6 +1,8 @@
 
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+// import { createPinia } from 'pinia'
+
+import pinia from './stores/index' //pinia持久化存储
 
 import './style/index.scss'
 
@@ -14,7 +16,7 @@ const app = createApp(App)
 
 app.use(Ele)
 
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 
 console.log('main',import.meta.env.VITE_APP_BASE_API)
