@@ -1,7 +1,6 @@
 <template>
 <div>
     商品列表
-<el-input v-model="input" ></el-input>
 </div>
 
 </template>

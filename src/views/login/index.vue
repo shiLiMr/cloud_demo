@@ -46,7 +46,7 @@ const ruleForm = reactive<RuleForm>({
     password: Local.get('password') || '123456',
 })
 const ruleusername = (rule: any, value: any, callback: any) => { // 手机号验证
-    const reg = /^(?:(?:\+|00)86)?1[3-9]\d{9}$/
+    const reg = /^(?:(?:\+|00)86)?1[3-9]\d{9}$/ 
     if (value === '' || !reg.test(value)) {
         callback(new Error('请输正确的手机号码'))
     } else {
