@@ -7,7 +7,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" icon="Search" @click="getMenuListData()">查询</el-button>
-                    <el-button type="success" icon="Plus">新建菜单</el-button>
+                    <el-button type="success" icon="Plus" @click="addMenu">新建菜单</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -28,24 +28,22 @@
                 <el-table-column prop="code" label="权限标识" />
                 <el-table-column prop="type" label="类型">
                     <template #default="scope">
-                        <transition mode="out-in" name="faa">
-                            <div>
+                     
                                 <!-- <el-tag v-if="scope.row.type == 1" type="primary" size="large">菜单</el-tag>
                             <el-tag v-if="scope.row.type == 2" type="success" size="large">按钮</el-tag> -->
                                 <el-tag :type="scope.row.type == 1 ? 'primary' : 'success'" size="large"> {{
                                     scope.row.type
-                                    == 1 ? '菜单' : '按钮'}}</el-tag>
-                            </div>
-                        </transition>
+                                        == 1 ? '菜单' : '按钮' }}</el-tag>
+                           
                     </template>
                 </el-table-column>
                 <el-table-column prop="sort" label="排序" width="80" />
                 <el-table-column align="center" label="操作" width="240">
                     <template #default="scope">
-                        <el-button type="primary" icon="Plus" link size="large">
+                        <el-button type="primary" icon="Plus" link size="large" @click="addMenu(scope.row.id)">
                             新增下级
                         </el-button>
-                        <el-button type="warning" icon="Edit" link size="large">
+                        <el-button type="warning" icon="Edit" link size="large" @click="editMenu(scope.row)">
                             修改
                         </el-button>
 
@@ -61,19 +59,21 @@
                 </el-table-column>
             </el-table>
         </div>
+        <!-- 抽屉 -->
+        <menuDialog ref="menuDialogRef" @getMenuLists="handles"></menuDialog>
     </div>
 </template>
 <script setup lang='ts'>
-import { reactive, ref } from 'vue'
+import { reactive, ref, defineAsyncComponent } from 'vue'
 import { getMenuList, delMenu } from '@/api/system/menu'
 import type { ResponseMenuListType } from '@/api/types/menuType'
 import { ElNotification } from 'element-plus';
+const menuDialog = defineAsyncComponent(() => import('./components/menudialog.vue'))
 
 const SearchForm = ref({  //搜索框数据
     keyword: ''
 })
 const tableData = ref<ResponseMenuListType[]>([])  //表格数据
-
 // 封装请求 列表数据
 const getMenuListData = async () => {
     const res = await getMenuList(SearchForm.value)
@@ -109,6 +109,23 @@ const cancel = () => {
         type: "info",
     });
 }
+// 实例化子组件方法
+const menuDialogRef=ref()
+// 
+const addMenu=(id:any)=>{  // 新增按钮
+    console.log(id);
+    if(id) menuDialogRef.value.openDrawer('add',"新增菜单",{parentId:id})
+    menuDialogRef.value.openDrawer('add',"新增菜单")
+}
+// 编辑按钮
+const editMenu=(row:ResponseMenuListType)=>{
+    menuDialogRef.value.openDrawer('edit','编辑菜单',{row})
+}
+const handles=()=>{ // 刷新菜单列表
+    getMenuListData();
+}
+
+
 
 </script>
 
@@ -117,6 +134,7 @@ const cancel = () => {
     display: flex !important;
     align-items: center !important;
 }
+
 
 .faa-enter-active,
 .faa-leave-active {
@@ -134,5 +152,10 @@ const cancel = () => {
 
 .faa-leave-to {
     transform: rotate(180deg);
+}
+
+.el-scrollbar {
+    box-sizing: border-box !important;
+    padding: 0;
 }
 </style>
