@@ -22,7 +22,7 @@
                     required: true,
                     message: '请选择菜单名称',
                     trigger: 'blur',
-                }" prop="meta.title">
+                }" prop="meta.title" >
                     <el-input v-model="ruleForm.meta.title" maxlength="10" placeholder="请输入菜单名称" show-word-limit
                         type="text" />
                 </el-form-item>
@@ -98,9 +98,10 @@
 <script setup lang='ts'>
 import { selectMenu, addMenu, editMenu } from '@/api/system/menu';
 import { ElNotification, type FormInstance } from 'element-plus';
-import { ref } from 'vue';
+import { ref,nextTick } from 'vue';
 import _ from "lodash";
 import type { MenuParamsType } from '@/api/types/menuType';
+
 
 // 操作类型
 const darType = ref('')
@@ -137,7 +138,7 @@ const props = {
     emitPath: false,
 };
 // 取消  关闭抽屉
-const handleClose = () => {
+const handleClose = () => {    
     ruleFormRef.value?.resetFields()
     drawer.value = false
 }
@@ -201,9 +202,10 @@ const openDrawer = (type: string, title: string, data = {} as any) => {
     menuTitle.value = title // 标题
    ruleForm.value.parentId = data.parentId
     if (type === "edit") {
-        ruleForm.value = data.row
         // ruleForm.value = {...data.row}
-        ruleForm.value = _.cloneDeep(data.row) // 深拷贝
+        nextTick(()=>{
+            ruleForm.value = _.cloneDeep(data.row) // 深拷贝
+        })
     }
 }
 

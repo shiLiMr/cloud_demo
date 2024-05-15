@@ -35,7 +35,7 @@
 
 .main-enter-active,
 .main-leave-active {
-    transition: all 0.3s ease;
+    transition: all 0.5s ease;
 }
 
 .main-enter-from {

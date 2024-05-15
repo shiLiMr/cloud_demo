@@ -7,14 +7,14 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" icon="Search" @click="getMenuListData()">查询</el-button>
-                    <el-button type="success" icon="Plus" @click="addMenu">新建菜单</el-button>
+                    <el-button type="success" icon="Plus" @click="addMenu('')">新建菜单</el-button>
                 </el-form-item>
             </el-form>
         </div>
         <!-- table 列表 -->
         <div class="menu-tablelist">
-            <el-table :data="tableData" style="width: 100%; margin-bottom: 20px" row-key="id" border>
-                <el-table-column prop="meta.title" label="菜单名称" width="170">
+            <el-table :data="tableData" style="width: 100%; margin-bottom: 20px" row-key="id" border >
+                <el-table-column prop="meta.title" label="菜单名称" width="170" align="center">
                     <template #default="scope">
                         <el-icon size="19">
                             <!-- <component v-if="scope.row.meta.icon" :is="scope.row.meta.icon.split('-')[1]"></component> -->
@@ -23,10 +23,10 @@
                         <span>{{ scope.row.meta.title }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="path" label="路由地址" />
-                <el-table-column prop="component" label="组件路径" />
-                <el-table-column prop="code" label="权限标识" />
-                <el-table-column prop="type" label="类型">
+                <el-table-column prop="path" label="路由地址" align="center" />
+                <el-table-column prop="component" label="组件路径" align="center" />
+                <el-table-column prop="code" label="权限标识" align="center" />
+                <el-table-column prop="type" label="类型" align="center">
                     <template #default="scope">
                      
                                 <!-- <el-tag v-if="scope.row.type == 1" type="primary" size="large">菜单</el-tag>
@@ -37,10 +37,10 @@
                            
                     </template>
                 </el-table-column>
-                <el-table-column prop="sort" label="排序" width="80" />
-                <el-table-column align="center" label="操作" width="240">
+                <el-table-column prop="sort" label="排序" width="80" align="center" />
+                <el-table-column  label="操作" width="240" align="center">
                     <template #default="scope">
-                        <el-button type="primary" icon="Plus" link size="large" @click="addMenu(scope.row.id)">
+                        <el-button type="primary" icon="Plus" link size="large" @click="addMenu(scope.row.id)" v-if="scope.row.type==='1'">
                             新增下级
                         </el-button>
                         <el-button type="warning" icon="Edit" link size="large" @click="editMenu(scope.row)">
@@ -114,8 +114,7 @@ const menuDialogRef=ref()
 // 
 const addMenu=(id:any)=>{  // 新增按钮
     console.log(id);
-    if(id) menuDialogRef.value.openDrawer('add',"新增菜单",{parentId:id})
-    menuDialogRef.value.openDrawer('add',"新增菜单")
+     menuDialogRef.value.openDrawer('add',"新增菜单",{parentId:id})
 }
 // 编辑按钮
 const editMenu=(row:ResponseMenuListType)=>{

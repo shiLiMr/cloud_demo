@@ -5,8 +5,7 @@ import type { UserInfo, MenuList } from '@/api/types/authType'
 
 import { Local } from "@/utils/storeage";
 
-import { useRouter } from 'vue-router';
-const router = useRouter()
+
 
 // pinia 组合式Api写法
 export const useAuthStore = defineStore('auth', () => {
@@ -87,7 +86,7 @@ export const useAuthStore = defineStore('auth', () => {
             buttonList.value = [];
             // router.push('/login')
             window.location.reload()
-            router
+           
         } catch (err) {
             console.log(err);
         }
