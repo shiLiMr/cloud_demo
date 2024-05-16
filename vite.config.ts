@@ -27,7 +27,8 @@ export default defineConfig(({mode})=>{
           [env.VITE_APP_BASE_API]:{
             // 要跨域的地址
             // target: 'http://localhost:7777',
-            target: 'https://mock.apifox.com/m1/4458460-0-default',
+            // target: 'https://mock.apifox.com/m1/4458460-0-default',
+            target: 'https://mock.apifox.com/m1/4461329-4107486-default',
             
             changeOrigin: true, //开启跨域
             // rewrite: (path) => path.replace(/^`${env.VITE_APP_BASE_API}`/, "")

@@ -25,7 +25,7 @@
             <el-table-column align="center" prop="remark" label="备注" />
             <el-table-column align="center" label="操作" width="240">
                 <template #default="scope">
-                    <el-button link type="primary" icon="Check">分配权限</el-button>
+                    <el-button link type="primary" icon="Check" @click="permission(scope.row)">分配权限</el-button>
                     <el-button link type="warning" icon="edit" @click="editSole(scope.row)">修改</el-button>
                     <el-popconfirm title="确定删除此角色和所拥有权限吗?" confirm-button-text="确定" cancel-button-text="取消"
                         @confirm="delSole(scope.row.id)" @cancel="handleCan">
@@ -42,9 +42,11 @@
         <!-- 分页 -->
         <el-row justify="end" style="margin-top: 20px">
             <el-pagination v-model:current-page="SearchForm.current" v-model:page-size="SearchForm.size"
-                :page-sizes="[10, 20, 30, 50]" layout="total, sizes, prev, pager, next, jumper" :total="400"
+                :page-sizes="[10, 20, 30, 50]" layout="total, sizes, prev, pager, next  " :total="400"
                 @size-change="handleSizeChange" @current-change="handleCurrentChange" />
         </el-row>
+        <!-- 权限管理组件 -->
+        <permissionDialog ref="perDialog" @getRoleList="getMenuListData()"></permissionDialog>
     </div>
 </template>
 <script setup lang='ts'>
@@ -53,6 +55,8 @@ import { getRoleListApi, deleteRoleApi } from '@/api/system/roles'
 import { ElNotification } from 'element-plus'
 import { defineAsyncComponent } from 'vue'
 const roledialog = defineAsyncComponent(() => import('./components/RoleDialog.vue'))
+
+const permissionDialog = defineAsyncComponent(() => import('./components/permission.vue'))
 
 import type { Record } from '@/api/types/rolesType'
 
@@ -103,7 +107,6 @@ const addMenu = () => { //新建菜单 按钮
 const editSole = (row: Record) => { // 修改
     openDialog.value!.openForm('edit', "修改角色", { row })
 }
-
 const addgetMenuListData = () => { // 新增之后子组件调用
     getMenuListData()
 }
@@ -117,6 +120,12 @@ const handleCurrentChange = (val: number) => { // 当前页
     SearchForm.current = val
     getMenuListData()
 }
+
+const perDialog=ref<InstanceType<typeof permissionDialog>>() // 权限管理
+const permission=(row:Record)=>{
+    perDialog.value!.handleOpen( `分配【${row.roleName}】的权限`,row.id  )
+}
+
 
 
 </script>

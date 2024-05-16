@@ -24,3 +24,13 @@ export const  addRoleApi=(roleData:addRole)=>{
 export const  editRoleApi=(roleData:addRole)=>{
     return request('/system/role','PUT',roleData)
 }
+//  角色 权限 选中 数据  /role/{roleld}/menu/ids
+//  角色 权限 选中 数据  /system/role/{roleld}/menu/ids
+export const  getRoleCheckedMenuApi=(roleld:number)=>{
+    return request<string[]>('/system/role/'+roleld+'/menu/ids','GET')
+}
+
+// 角色 权限 选中 数据 提交  /system/role/{roleId}/menu/ids
+export const  setRoleCheckedMenuApi=(roleId:number,menuIds:string[])=>{
+    return request('/system/role/'+roleId+'/menu/ids','POST',menuIds)
+}

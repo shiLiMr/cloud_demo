@@ -1,8 +1,8 @@
 import request from "@/utils/htttp";
-// 获取菜单列表 数据
 
 import type { ResponseMenuListType, SearchParamsType, MenuParamsType ,ResponseSelectMenuType} from "@/api/types/menuType";
 
+// 获取菜单列表 数据
 export const getMenuList = (searchParams?: SearchParamsType) => {
   return request<ResponseMenuListType[]>(
     "/system/menu/search",

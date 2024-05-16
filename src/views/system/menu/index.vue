@@ -13,8 +13,8 @@
         </div>
         <!-- table 列表 -->
         <div class="menu-tablelist">
-            <el-table :data="tableData" style="width: 100%; margin-bottom: 20px" row-key="id" border >
-                <el-table-column prop="meta.title" label="菜单名称" width="170" align="center">
+            <el-table :data="tableData" style="width: 100%; margin-bottom: 20px" row-key="id" border>
+                <el-table-column align="center" prop="meta.title" label="菜单名称" width="170">
                     <template #default="scope">
                         <el-icon size="19">
                             <!-- <component v-if="scope.row.meta.icon" :is="scope.row.meta.icon.split('-')[1]"></component> -->
@@ -23,24 +23,25 @@
                         <span>{{ scope.row.meta.title }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="path" label="路由地址" align="center" />
-                <el-table-column prop="component" label="组件路径" align="center" />
-                <el-table-column prop="code" label="权限标识" align="center" />
-                <el-table-column prop="type" label="类型" align="center">
+                <el-table-column align="center" prop="path" label="路由地址" />
+                <el-table-column align="center" prop="component" label="组件路径" />
+                <el-table-column align="center" prop="code" label="权限标识" />
+                <el-table-column align="center" prop="type" label="类型">
                     <template #default="scope">
-                     
-                                <!-- <el-tag v-if="scope.row.type == 1" type="primary" size="large">菜单</el-tag>
+
+                        <!-- <el-tag v-if="scope.row.type == 1" type="primary" size="large">菜单</el-tag>
                             <el-tag v-if="scope.row.type == 2" type="success" size="large">按钮</el-tag> -->
-                                <el-tag :type="scope.row.type == 1 ? 'primary' : 'success'" size="large"> {{
-                                    scope.row.type
-                                        == 1 ? '菜单' : '按钮' }}</el-tag>
-                           
+                        <el-tag :type="scope.row.type == 1 ? 'primary' : 'success'" size="large"> {{
+                            scope.row.type
+                                == 1 ? '菜单' : '按钮' }}</el-tag>
+
                     </template>
                 </el-table-column>
-                <el-table-column prop="sort" label="排序" width="80" align="center" />
-                <el-table-column  label="操作" width="240" align="center">
+                <el-table-column align="center" prop="sort" label="排序" width="80" />
+                <el-table-column align="center" label="操作" width="240">
                     <template #default="scope">
-                        <el-button type="primary" icon="Plus" link size="large" @click="addMenu(scope.row.id)" v-if="scope.row.type==='1'">
+                        <el-button type="primary" icon="Plus" link size="large" @click="addMenu(scope.row.id)"
+                            v-if="scope.row.type === '1'">
                             新增下级
                         </el-button>
                         <el-button type="warning" icon="Edit" link size="large" @click="editMenu(scope.row)">
@@ -110,17 +111,17 @@ const cancel = () => {
     });
 }
 // 实例化子组件方法
-const menuDialogRef=ref()
+const menuDialogRef = ref()
 // 
-const addMenu=(id:any)=>{  // 新增按钮
+const addMenu = (id: any) => {  // 新增按钮
     console.log(id);
-     menuDialogRef.value.openDrawer('add',"新增菜单",{parentId:id})
+    menuDialogRef.value.openDrawer('add', "新增菜单", { parentId: id })
 }
 // 编辑按钮
-const editMenu=(row:ResponseMenuListType)=>{
-    menuDialogRef.value.openDrawer('edit','编辑菜单',{row})
+const editMenu = (row: ResponseMenuListType) => {
+    menuDialogRef.value.openDrawer('edit', '编辑菜单', { row })
 }
-const handles=()=>{ // 刷新菜单列表
+const handles = () => { // 刷新菜单列表
     getMenuListData();
 }
 
