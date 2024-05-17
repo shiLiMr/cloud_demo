@@ -42,7 +42,7 @@
         <!-- 分页 -->
         <el-row justify="end" style="margin-top: 20px">
             <el-pagination v-model:current-page="SearchForm.current" v-model:page-size="SearchForm.size"
-                :page-sizes="[10, 20, 30, 50]" layout="total, sizes, prev, pager, next  " :total="400"
+                :page-sizes="[10, 20, 30, 50]" layout="total, sizes, prev, pager, next  " :total="total"
                 @size-change="handleSizeChange" @current-change="handleCurrentChange" />
         </el-row>
         <!-- 权限管理组件 -->
