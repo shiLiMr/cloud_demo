@@ -76,4 +76,9 @@ export interface editUserlist extends addUserlist {
 //   }
 // | addUserlist;
 
-
+// 重置密码
+export interface passwordType {
+    newPassword: string;
+    repPassword: string;
+    userId: number;
+}

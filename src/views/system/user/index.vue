@@ -16,7 +16,7 @@
             <el-table-column align="center" prop="nickName" label="用户昵称" />
             <el-table-column align="center" prop="username" label="用户账号" />
             <el-table-column align="center" prop="mobile" label="手机号" />
-            <el-table-column align="center" prop="email" label="邮箱" />
+            <el-table-column align="center" prop="email" label="邮箱" width="180" />
             <el-table-column align="center" prop="accountNonLocked" sortable label="账号锁定">
                 <template #default="scope">
                     <el-tag effect="dark" :type="scope.row.accountNonLocked ? 'success' : 'danger'">{{
@@ -38,7 +38,7 @@
             <el-table-column align="center" prop="createTime" label="创建时间" sortable />
             <el-table-column align="center" label="操作" width="260px">
                 <template #default="scope">
-                    <el-button link icon="key" type="primary">密码重置</el-button>
+                    <el-button link icon="key" type="primary" @click="resetPassword(scope.row)">密码重置</el-button>
                     <el-button link icon="edit" type="warning" @click="editMenu(scope.row)">修改</el-button>
                     <el-popconfirm :title="`确定要永久删除【${scope.row.nickName}】吗？`" @confirm="handleDelUser(scope.row)"
                         @cancel="handlecanceluser" width="250px">
@@ -58,6 +58,8 @@
         </el-row>
         <!-- 子组件 -->
         <userDialog ref="opendialog" @getUserList="getuserList"></userDialog>
+
+        <passdialog ref="passwordDialog"></passdialog>
     </div>
 </template>
 <script setup lang='ts'>
@@ -68,6 +70,8 @@ import { ElNotification } from 'element-plus';
 import { defineAsyncComponent } from 'vue';
 
 const userDialog = defineAsyncComponent(() => import('./components/userdialog.vue'))
+
+const passdialog= defineAsyncComponent(()=>import('./components/passdialog.vue'))
 
 const SearchForm = ref({
     keyword: '',
@@ -128,6 +132,12 @@ const addMenu = () => { // 新建菜单按钮
 }
 const editMenu = (row: Record) => { // 编辑菜单按钮
     opendialog.value?.openDialog('edit','编辑用户',row)
+}
+
+// 重置密码
+const passwordDialog=ref<InstanceType <typeof passdialog>>()
+const resetPassword=(row:Record)=>{
+    passwordDialog.value?.openDialog(`重置密码【${row.nickName}】`,row.id)
 }
 
 

@@ -23,7 +23,7 @@
                 </template>
             </el-table-column>
             <el-table-column align="center" prop="remark" label="备注" />
-            <el-table-column align="center" label="操作" width="240">
+            <el-table-column align="center" label="操作" width="300">
                 <template #default="scope">
                     <el-button link type="primary" icon="Check" @click="permission(scope.row)">分配权限</el-button>
                     <el-button link type="warning" icon="edit" @click="editSole(scope.row)">修改</el-button>

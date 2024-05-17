@@ -38,7 +38,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column align="center" prop="sort" label="排序" width="80" />
-                <el-table-column align="center" label="操作" width="240">
+                <el-table-column align="center" label="操作" width="300">
                     <template #default="scope">
                         <el-button type="primary" icon="Plus" link size="large" @click="addMenu(scope.row.id)"
                             v-if="scope.row.type === '1'">

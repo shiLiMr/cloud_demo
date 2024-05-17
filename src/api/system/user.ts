@@ -1,6 +1,6 @@
 import request from '@/utils/htttp'
 // user 用户管理 接口 
-import type { RecordData, getUserList,addUserlist,Userlust,editUserlist } from '@/api/types/userType'
+import type { RecordData, getUserList,addUserlist,Userlust,editUserlist, passwordType } from '@/api/types/userType'
 
 // 请求 用户列表数据 /system/user/search
 export const getUserListApi = (data: getUserList) => {
@@ -24,4 +24,8 @@ export const addUserApi = (data: addUserlist) => {
 // 修改 用户 /system/user
 export const updateUserApi = (data: editUserlist) => {
     return request<Userlust>('/system/user','PUT',data)
+}
+// 重置密码  /system/user/password
+export const resetPasswordApi = (data:passwordType) => {
+    return request('/system/user/password','PUT',data)
 }
