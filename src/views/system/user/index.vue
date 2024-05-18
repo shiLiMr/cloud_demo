@@ -143,9 +143,9 @@ const resetPassword=(row:Record)=>{
 
 </script>
 <style lang='scss' scoped>
-.user {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
+// .user {
+//     height: 100%;
+//     display: flex;
+//     flex-direction: column;
+// }
 </style>

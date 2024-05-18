@@ -130,9 +130,9 @@ const permission=(row:Record)=>{
 
 </script>
 <style lang='scss' scoped>
-.role{
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
+// .role{
+//     height: 100%;
+//     display: flex;
+//     flex-direction: column;
+// }
 </style>

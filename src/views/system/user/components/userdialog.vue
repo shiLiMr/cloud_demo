@@ -60,7 +60,7 @@ import type { addUserlist, Userlust, Datum } from '@/api/types/userType'
 import { nextTick } from 'vue';
 import { ElNotification, type FormInstance, type FormRules } from 'element-plus';
 
-import _ from 'lodash'
+import _ from 'lodash';
 
 
 const dialogFormVisible = ref(false) //控制dialog 显示隐藏
@@ -114,7 +114,7 @@ const openDialog = async (type: string, title: string, data = {} as any) => { //
     await getroleslist() // 调用请求 分配角色数据
 
     if (type === 'edit') {
-        nextTick(() => {  // 数据回显
+        nextTick(() => { // 数据回显
             // form.value = { ...data }
             form.value = _.cloneDeep(data)
         })
