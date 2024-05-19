@@ -27,7 +27,7 @@
                         </div>
                         <div class="list-table-text">
                             <div class="list-table-text-title">{{ scope.row.name }}</div>
-                            <div class="list-table-text-desc">{{ scope.row.code }}</div>
+                            <div @click="editMenu(scope.row)" class="list-table-text-desc">{{ scope.row.code }}</div>
                         </div>
                     </div>
                 </template>
@@ -109,6 +109,7 @@ const DeleteOk = (id: string) => { // 删除
         console.log(res)
         if (res.code === 20000) {
             ElNotification.success(res.message)
+            tableData.value = []
             getGoodsList()
         }else{
             ElNotification.error(res.message)
