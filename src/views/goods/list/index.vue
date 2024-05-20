@@ -7,8 +7,8 @@
                 </el-form-item>
                 <el-form-item label="商品状态 :">
                     <el-select v-model="SearchForm.status" placeholder="请选择商品状态" style="width: 240px">
-                        <el-option label="已上架" value="1" />
-                        <el-option label="已下架" value="0" />
+                        <el-option label="已上架" :value="1" />
+                        <el-option label="已下架" :value="0" />
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -18,16 +18,18 @@
             </el-form>
         </div>
         <!-- table 表格 -->
-        <el-table :data="tableData" style="width: 100%" border>
-            <el-table-column align="center" prop="id" label="商品名称/编码" width="230">
+        <el-table :data="tableData" style="width: 100%" border stripe>
+            <el-table-column fixed="left" align="center" prop="id" label="商品名称/编码" width="220">
                 <template #default="scope">
                     <div class="list-table">
                         <div class="list-table-img">
-                            <el-image fit="cover" :src="scope.row.imageUrl" />
+                            <!-- <el-image fit="cover" :src="scope.row.imageUrl" /> -->
+                            <el-avatar shape="square" :size="50" :src="scope.row.imageUrl" />
                         </div>
                         <div class="list-table-text">
                             <div class="list-table-text-title">{{ scope.row.name }}</div>
-                            <div @click="editMenu(scope.row)" class="list-table-text-desc">{{ scope.row.code }}</div>
+                            <el-link type="primary" @click="editMenu(scope.row)" class="list-table-text-desc">{{
+                                scope.row.code }}</el-link>
                         </div>
                     </div>
                 </template>
@@ -44,12 +46,19 @@
                     <div v-if="scope.row.discountPrice">￥ {{ scope.row.discountPrice }}</div>
                 </template>
             </el-table-column>
-            <el-table-column align="center" prop="cost" label="成本价" sortable />
+            <el-table-column align="center" prop="cost" label="成本价" />
+            <el-table-column align="center" prop="createTime" label="入库时间" width="110" />
+            <el-table-column align="center" prop="status" label="商品状态" width="100">
+                <template #default="scope">
+                    <el-switch v-model="scope.row.status" :active-value="0" :inactive-value="1" class="ml-2"
+                        inline-prompt active-text="已上架" inactive-text="已下架" @change="changeStatus(scope.row)" />
+                </template>
+            </el-table-column>
             <el-table-column fixed="right" align="center" label="操作" width="160px">
                 <template #default="scope">
                     <el-button link icon="edit" type="warning" @click="editMenu(scope.row)">修改</el-button>
                     <el-popconfirm :title="`确定要永久删除【${scope.row.name}】吗？`" width="" @confirm="DeleteOk(scope.row.id)"
-                     @cancel="OnDelete">
+                        @cancel="OnDelete">
                         <template #reference>
                             <el-button link icon="delete" type="danger">删除</el-button>
                         </template>
@@ -70,31 +79,22 @@
 
 </template>
 <script setup lang='ts'>
-import { ref } from 'vue';
-import type { getGoodsLists, GoodsListData, Record } from '@/api/types/listType'
-import { getGoodsListApi, getGoodsCategoryDeleteApi } from '@/api/goods/list'
+// hooks 抽离
+import { useGoodsList }from './composable/useGoodsList'
+const { SearchForm,tableData,total,getGoodsList,DeleteOk,OnDelete,changeStatus,listdialog,addMenu,editMenu,getlistDialog } = useGoodsList()
+// const getlistDialog = defineAsyncComponent(() => import('./components/listsdialog.vue'))
+
+
+import { ref } from 'vue' ;
+import type {  GoodsListData, Record } from '@/api/types/listType'
 import { defineAsyncComponent } from 'vue';
-import { ElNotification } from 'element-plus';
-const getlistDialog = defineAsyncComponent(() => import('./components/listsdialog.vue'))
 
 
-const SearchForm = ref<getGoodsLists>({
-    keyword: '',
-    status: '',
-    current: 1,
-    size: 10,
-})
-const tableData = ref<Record[]>() // 商品列表数据
-const total = ref<number>(0) //总页数
-const getGoodsList = async () => { // 获取商品列表数据
-    const res = await getGoodsListApi(SearchForm.value)
-    console.log(res);
-    tableData.value = res.data.records
-    total.value = res.data.total
-}
-getGoodsList()
+getGoodsList() //初始化数据
+
 const SearchRole = () => { // 查询
-    console.log(SearchForm.value)
+    tableData.value=[]
+    getGoodsList()
 }
 const handleSizeChange = (val: number) => { // 每页条数改变
     SearchForm.value.size = val
@@ -104,39 +104,16 @@ const handleCurrentChange = (val: number) => { // 当前页改变
     SearchForm.value.current = val
     getGoodsList()
 }
-const DeleteOk = (id: string) => { // 删除
-    getGoodsCategoryDeleteApi(id).then(res => {
-        console.log(res)
-        if (res.code === 20000) {
-            ElNotification.success(res.message)
-            tableData.value = []
-            getGoodsList()
-        }else{
-            ElNotification.error(res.message)
-        }
-    })
-}
-const OnDelete=()=>{
-    ElNotification.warning('取消删除！')
-}
 
 
-const listdialog = ref<InstanceType<typeof getlistDialog>>()
-const addMenu = () => { // 新增商品按钮
-    listdialog.value?.openDrawer('add', '新增表单信息') // 调用子组件的打开抽屉方法
-}
-const editMenu = (row: GoodsListData) => { // 编辑商品按钮
-    listdialog.value?.openDrawer('edit', '修改商品信息', row)
-    console.log(row);
 
-}
 
 </script>
 <style lang='scss' scoped>
 .list-table {
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
 
     .list-table-img {
         display: flex;
@@ -154,13 +131,8 @@ const editMenu = (row: GoodsListData) => { // 编辑商品按钮
         justify-content: center;
         text-align: left;
 
-        .list-table-text-desc {
-            color: #409eff;
-        }
 
-        .list-table-text-desc:hover {
-            text-decoration: underline;
-        }
+
     }
 
 }

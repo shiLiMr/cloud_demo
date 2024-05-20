@@ -23,3 +23,24 @@ export const  getGoodsCategoryEditApi=(data:addListType)=> {
 export const  getGoodsCategoryDeleteApi=(ids:string )=> {
     return request('/goods/'+ids,"DELETE")
 }
+// 修改商品状态  /goods/status
+interface editGoodsStatus {
+    id: number;
+    status: number;
+}
+export const  getGoodsStatusApi=(data:editGoodsStatus)=> {
+    return request('/goods/status',"PUT",data)
+}
+
+// 上传图片 /system/media/upload/img
+export interface getImagesI {
+    data?: string;
+    file?: string;
+}
+export const  getImagesApi=()=> {
+    return request('/system/media/upload/img',"POST",{}, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+}

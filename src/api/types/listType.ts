@@ -63,7 +63,7 @@ export interface addListType {
     cost: number |null;
     discountPrice: number |null;
     goodsDetail: string;
-    imageUrl: string;
+    imageUrl?: string;
     name: string;
     price: number |null;
     quickCode: string;
@@ -72,9 +72,8 @@ export interface addListType {
     sort: number|null;
     specsName: string;
     status: number|string;
-    stockNum: null |number;
+    stockNum: null |number|string;
     unitName: string;
     categoryName?: string;
     id?: number;
-
 }
