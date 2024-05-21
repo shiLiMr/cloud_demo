@@ -22,5 +22,17 @@ export interface Datum {
     name: string;
     value: number;
 }
+// 近30天销售趋势
+export interface thiretyData {
+    last30Days: string[];
+    orderNumList: number[];
+    rechargeMoneyList: number[];
+    returnMoneyList: number[];
+    saleMoneyList: number[];
+}
 
-
+// 会员消费Top10
+export interface fourDataType {
+    consumeMoney: number;
+    name: string;
+}

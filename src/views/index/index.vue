@@ -9,7 +9,7 @@
                         <div class="one-contents" style="background-image: linear-gradient(to right,#02ba27,#57d170);">
                             <div style="display: flex; align-items: center;">订单笔数 <svg-icon
                                     icon="QuestionFilled"></svg-icon></div>
-                            <div>{{ datas?.totalOrderNum }} <span style="font-size: 12px;">笔</span></div>
+                            <div style="width: 100%;text-align: left;">{{ datas?.totalOrderNum }} <span style="font-size: 12px;">笔</span></div>
                         </div>
                     </el-card>
                 </el-col>
@@ -18,7 +18,7 @@
                         <div class="one-contents" style="background-image: linear-gradient(to right,#f52d13,#f65844);">
                             <div style="display: flex; align-items: center;">销售总额 <svg-icon
                                     icon="QuestionFilled"></svg-icon></div>
-                            <div>{{ datas?.totalSaleMoney }} <span style="font-size: 12px;">元</span></div>
+                            <div style="width: 100%;text-align: left;">{{ datas?.totalSaleMoney }} <span style="font-size: 12px;">元</span></div>
                         </div>
                     </el-card>
                 </el-col>
@@ -27,7 +27,7 @@
                         <div class="one-contents">
                             <div style="display: flex; align-items: center;">退款总额 <svg-icon
                                     icon="QuestionFilled"></svg-icon></div>
-                            <div>{{ datas?.totalReturnedMoney }} <span style="font-size: 12px;">元</span></div>
+                            <div style="width: 100%;text-align: left;">{{ datas?.totalReturnedMoney }} <span style="font-size: 12px;">元</span></div>
                         </div>
                     </el-card>
                 </el-col>
@@ -36,7 +36,7 @@
                         <div class="one-contents" style="background-image: linear-gradient(to right,#2263e6,#779fef);">
                             <div style="display: flex; align-items: center;">综合收入 <svg-icon
                                     icon="QuestionFilled"></svg-icon></div>
-                            <div>{{ datas?.totalIncomeMoney }} <span style="font-size: 12px;">笔</span></div>
+                            <div style="width: 100%;text-align: left;">{{ datas?.totalIncomeMoney }} <span style="font-size: 12px;">笔</span></div>
                         </div>
                     </el-card>
                 </el-col>
@@ -49,11 +49,14 @@
                     <el-card shadow="hover">
                         <h3>分类销售统计</h3>
                         <p style="font-size: 13px;">每种商品分类的近30天销售数据</p>
-                        <div ref="ones" style="width: 300px;height: 300px;"></div>
+                        <div ref="ones" style="width: 70%;height: 300px;"></div>
                     </el-card>
                 </el-col>
                 <el-col :span="16" :lg="16" :md="16" :sm="24" :xs="24">
-                    <el-card shadow="hover">近30天销售趋势</el-card>
+                    <el-card shadow="hover">
+                        <!-- <h3>近30天销售趋势</h3> -->
+                        <div ref="tows" style="width: 85%;height: 300px;"></div>
+                    </el-card>
                 </el-col>
             </el-row>
         </div>
@@ -61,10 +64,16 @@
             <el-row :gutter="20">
 
                 <el-col :span="16" :lg="16" :md="16" :sm="24" :xs="24">
-                    <el-card shadow="hover">会员消费Top10</el-card>
+                    <el-card shadow="hover">
+                        <!-- 会员消费Top10 -->
+                        <div ref="threes" style="width: 85%;height: 300px;"></div>
+                    </el-card>
                 </el-col>
                 <el-col :span="8" :lg="8" :md="8" :sm="24" :xs="24">
-                    <el-card shadow="hover">气温仪表盘℃</el-card>
+                    <el-card shadow="hover">
+                        <h3>气温仪表盘℃</h3>
+                        <div ref="perature" style="width: 100%; height: 300px;"></div>
+                    </el-card>
                 </el-col>
             </el-row>
         </div>
@@ -74,10 +83,10 @@
 import { reactive, ref, onMounted } from 'vue';
 const input = ref('')
 import { defineAsyncComponent } from 'vue';
-import { oneList } from './dataList'
+import { oneList,towList,threeList,temperature } from './dataList'
 
-import type { Data, yingyeshujuType } from '@/api/types/indexType'
-import { getstatisticsApi, getcategoryDataApi } from '@/api/indexs/index'
+import type { Data, thiretyData,fourDataType } from '@/api/types/indexType'
+import { getstatisticsApi, getcategoryDataApi,get30daysApi, getmemberApi} from '@/api/indexs/index'
 const datas = ref<Data | any>()
 const getData = () => {  // 营业数据统计
     getstatisticsApi().then(res => {
@@ -86,15 +95,39 @@ const getData = () => {  // 营业数据统计
 }
 onMounted(() => {
     getData()
-    getoneList()
-})
+    getoneList()  //初始化分类销售统计数据
+    gettowList() //近30天销售趋势
+    getfourList() //会员消费Top10
+    getperatureData()// 气温仪表盘
+}) 
+// 分类销售统计
 const ones = ref()
-
-const getoneList = async () => {
+const getoneList = async () => { // 分类销售统计 数据请求
     const res = await getcategoryDataApi()
-    console.log(res);
+    // console.log(res);
     oneList(ones.value, res.data)
 }
+// 近30天销售趋势
+const tows=ref()
+const gettowList= async ()=>{
+    const res=await get30daysApi()
+    // console.log(res.data);
+    towList(tows.value,res.data)
+}
+//会员消费Top10
+const threes=ref()
+const getfourList= async ()=>{
+    const res=await getmemberApi()
+    console.log(res.data);
+    threeList(threes.value,res.data)
+}
+// 温度 
+const perature=ref()
+const getperatureData=()=>{
+    temperature(perature.value,[])
+}
+
+
 
 </script>
 <style lang='scss' scoped>
@@ -115,7 +148,7 @@ const getoneList = async () => {
 
                 :deep(.el-card__body) {
                     padding: 0 !important;
-
+                    text-align: center;
                     .one-contents {
                         padding: 20px;
                         color: #fff;

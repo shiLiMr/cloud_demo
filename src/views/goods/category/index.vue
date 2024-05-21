@@ -72,7 +72,7 @@ const columns = [
         align: 'center',
     },
 ]
-const tableData = ref<Record[]>() // 表格数据
+const tableData = ref<Record[]>([]) // 表格数据
 const total = ref<number>(0)// 总条数
 const getMenuListData = async () => {
     try {
