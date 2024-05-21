@@ -19,6 +19,7 @@
     "axios": "^1.6.8",
     "echarts": "^5.5.0",
     "element-plus": "^2.7.2",
+    "js-pinyin": "^0.2.5",
     "mockjs": "^1.1.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",

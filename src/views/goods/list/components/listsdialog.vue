@@ -4,7 +4,7 @@
             ref="ruleformRef" :rules="rules">
             <el-form-item label="商品名称" prop="name">
                 <el-input v-model="form.name" placeholder="请输入商品名称" show-word-limit maxlength="30" clearable
-                    @blur="handleBlur" />
+                    @clear="Clear" />
             </el-form-item>
             <el-form-item label="商品分类" prop="categoryId">
                 <el-select v-model="form.categoryId" placeholder="请选择商品分类" style="width: 240px" clearable>
@@ -102,8 +102,7 @@ onBeforeUnmount(() => {
     if (editor == null) return
     editor.destroy()
 })
-
-const handleCreated = (editor:any) => {
+const handleCreated = (editor: any) => {
     editorRef.value = editor // 记录 editor 实例，重要！
 }
 
@@ -180,8 +179,36 @@ const form = ref<addListType>({
     imageUrl: '',//商品图片
     id: 0,
 })
+import pinyin from 'js-pinyin';
+const validatorName = (rule: any, value: any, callback: any) => {
+    if (value === '') {
+        callback(new Error('商品分类为必填项！'))
+
+    } else {
+        callback()
+        //验证是否是中文
+        var pattern1 = new RegExp("[\u4E00-\u9FA5]+");
+        if(pattern1.test(value)){
+            pinyin.setOptions({ checkPolyphone: false, charCase: 0 });
+            form.value.quickCode=pinyin.getCamelChars(value)
+        }
+        //验证是否是英文
+        var pattern2 = new RegExp("[A-Za-z]+");
+        if(pattern2.test(value)){
+            form.value.quickCode=value.toUpperCase()
+        }
+        //验证是否是数字
+        var pattern3 = new RegExp("[0-9]+");
+        if(pattern3.test(value)){
+            form.value.quickCode = value
+        } 
+    }
+}
+const Clear=()=>{
+    form.value.quickCode=''
+}
 const rules = reactive<FormRules<addListType>>({
-    name: [{ required: true, message: '商品名称为必填项！', trigger: 'blur' }],
+    name: [{ validator: validatorName, required: true, trigger: 'blur' }],
     categoryId: [{ required: true, message: '商品分类为必填项！', trigger: 'change' }],
     code: [{ required: true, message: '商品编码为必填项！', trigger: 'blur' }], // 
     stockNum: [{ required: true, message: '库存数量为必填项！', trigger: 'blur' }],
