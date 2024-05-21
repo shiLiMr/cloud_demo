@@ -61,10 +61,8 @@
                 <el-input v-model="form.remark" placeholder="备注信息最多100个字" show-word-limit maxlength="100" clearable />
             </el-form-item>
             <el-form-item style="width: 600px;" label="商品主图" prop="">
-                <el-upload class="avatar-uploader"
-                    action="https://mock.apifox.com/m1/4460996-0-default/system/media/upload/img" method="POST"
-                    :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                <el-upload class="avatar-uploader" action="" :http-request="handleUpdate" :show-file-list="false">
+                    <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar" />
                     <el-icon v-else class="avatar-uploader-icon">
                         <Plus />
                     </el-icon>
@@ -72,7 +70,8 @@
                 <p style="font-size: 12px;">上传的图片大小不能超过1MB，格式为 png/jpg/ipeg 的文件。</p>
             </el-form-item>
             <el-form-item style="width: 95%;" label="商品详情" prop="goodsDetail">
-                <quill-editor style="height: 130px;" v-model="form.goodsDetail" />
+                <!-- 富文本 -->
+
             </el-form-item>
         </el-form>
         <template #footer>
@@ -86,32 +85,45 @@
 </template>
 <script setup lang='ts'>
 import { nextTick, reactive, ref } from 'vue';
-import QuillEditor from 'vue3-quill-editor-vite'
-import 'vue3-quill-editor-vite/dist/style.css'
-import { getGoodsCategoryApi } from '@/api/goods/list';
+import { getGoodsCategoryApi, } from '@/api/goods/list';
 import type { getGoodsCategory, Datumcate, addListType } from '@/api/types/listType'
 import _ from 'lodash'
-import { ElNotification, type FormInstance, type FormRules } from 'element-plus';
+import { ElNotification, type FormInstance, type FormRules, type UploadRequestOptions } from 'element-plus';
 import { getGoodsCategoryAddApi, getGoodsCategoryEditApi, getImagesApi } from '@/api/goods/list'
 
 const drawer = ref(false);  // 是否关闭 抽屉
 const isTitle = ref<string>(' ')// 弹窗标题
 const DiaType = ref<string>(' ') // 弹窗类型
-const imageUrl = ref(''); // 图片地址
-const handleAvatarSuccess = (res: any, file: any) => { // 图片上传成功
-    console.log(res);
-    console.log(file);
-    if (res.code == 20000) {
-        ElNotification.success('图片上传成功！')
-        imageUrl.value = URL.createObjectURL(file.raw);
-        form.value.imageUrl = res.data
-    } else {
-        ElNotification.error('图片上传失败！')
+const handleUpdate = async (options: UploadRequestOptions) => { //图片上传
+    console.log(options);
+    // 1.. 打开弹出框
+    // 2..获取选择的文件
+    const file = options.file;
+    // 3.. 判断文件大小
+    if (file.size > 1 * 1024 * 1024) {
+        ElNotification.error('上传大小不能超过1MB')
+        return;
     }
-};
-const beforeAvatarUpload = (file: any) => { //图片上传前
-
+    // 4.。判断文间 类型
+    const type = file.type;
+    const arr = ['image/png', 'image/jpg', 'image/jpeg'];
+    if (!arr.includes(type)) {
+        ElNotification.error('上传图片格式不正确')
+        return;
+    }
+    // 5. 创建formdata对象
+    const formdata = new FormData();
+    // 6. 添加文件
+    formdata.append('file', file);
+    formdata.append('data', JSON.stringify({ sourceType: "goods_img" }))
+    // 7. 发送请求
+    const res = await getImagesApi()
+    // 8.. 将返回的图片地址赋值给imageUrl
+    form.value.imageUrl = res.data;
+    ElNotification.success('图片上传成功！')
 }
+
+
 const options = ref<Datumcate[]>() // 商品分类列表
 const getcateLists = async () => { //获取商品分类数据
     const res = await getGoodsCategoryApi()
@@ -120,6 +132,7 @@ const getcateLists = async () => { //获取商品分类数据
 }
 const handleClose = () => { // 关闭抽屉
     drawer.value = false;
+    form.value.imageUrl=''
     ruleformRef.value?.resetFields();//重置表单
 };
 const ruleformRef = ref<FormInstance>()//表单ref
@@ -161,7 +174,6 @@ const openDrawer = (type: string, title: string, data = {} as any) => {
     if (type === 'edit') {
         nextTick(() => {
             console.log(data);
-            imageUrl.value=data.imageUrl
             form.value = _.cloneDeep(data)
             form.value.status = data.status.toString()
         })
@@ -221,6 +233,7 @@ const handleBlur = () => {  //输入框失焦事件
 .avatar-uploader:hover {
     border-color: #409eff !important;
 }
+
 .el-icon.avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
