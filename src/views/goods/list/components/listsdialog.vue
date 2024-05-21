@@ -71,7 +71,12 @@
             </el-form-item>
             <el-form-item style="width: 95%;" label="商品详情" prop="goodsDetail">
                 <!-- 富文本 -->
-
+                <div style="border: 1px solid #ccc">
+                    <Toolbar style="border-bottom: 1px solid #ccc" :editor="editorRef" :defaultConfig="toolbarConfig"
+                        mode="default" />
+                    <Editor style="height: 500px; overflow-y: hidden;" v-model="form.remark"
+                        :defaultConfig="editorConfig" mode="default" @onCreated="handleCreated" />
+                </div>
             </el-form-item>
         </el-form>
         <template #footer>
@@ -84,6 +89,24 @@
     </el-drawer>
 </template>
 <script setup lang='ts'>
+import '@wangeditor/editor/dist/css/style.css' // 引入 css
+import { onBeforeUnmount, shallowRef, onMounted } from 'vue'
+import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+// 编辑器实例，必须用 shallowRef
+const editorRef = shallowRef()
+const toolbarConfig = {}
+const editorConfig = { placeholder: '请输入内容...' }
+// 组件销毁时，也及时销毁编辑器
+onBeforeUnmount(() => {
+    const editor = editorRef.value
+    if (editor == null) return
+    editor.destroy()
+})
+
+const handleCreated = (editor:any) => {
+    editorRef.value = editor // 记录 editor 实例，重要！
+}
+
 import { nextTick, reactive, ref } from 'vue';
 import { getGoodsCategoryApi, } from '@/api/goods/list';
 import type { getGoodsCategory, Datumcate, addListType } from '@/api/types/listType'
@@ -132,7 +155,7 @@ const getcateLists = async () => { //获取商品分类数据
 }
 const handleClose = () => { // 关闭抽屉
     drawer.value = false;
-    form.value.imageUrl=''
+    form.value.imageUrl = ''
     ruleformRef.value?.resetFields();//重置表单
 };
 const ruleformRef = ref<FormInstance>()//表单ref
