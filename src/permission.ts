@@ -30,7 +30,7 @@ router.beforeEach(async(to, from, next) => {
     const store=useAuthStore()
     const token=store.token
     // console.log(token);
-    
+    // next()
     if(token){
         if(to.path==='/login'){
             return next({path:from.path})

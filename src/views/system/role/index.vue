@@ -121,9 +121,9 @@ const handleCurrentChange = (val: number) => { // 当前页
     getMenuListData()
 }
 
-const perDialog=ref<InstanceType<typeof permissionDialog>>() // 权限管理
-const permission=(row:Record)=>{
-    perDialog.value!.handleOpen( `分配【${row.roleName}】的权限`,row.id  )
+const perDialog = ref<InstanceType<typeof permissionDialog>>() // 权限管理
+const permission = (row: Record) => {
+    perDialog.value!.handleOpen(`分配【${row.roleName}】的权限`, row.id)
 }
 
 
@@ -134,5 +134,4 @@ const permission=(row:Record)=>{
 //     height: 100%;
 //     display: flex;
 //     flex-direction: column;
-// }
-</style>
+// }</style>
